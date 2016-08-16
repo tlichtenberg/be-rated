@@ -1,0 +1,22 @@
+<div ng-controller="RatingsDetailCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+
+    <div class="row" ng-init="init()">
+        <div class="col-md-9">
+            <div class="well well-sm">
+                <h2>{{rating.ratedType}}</h2>
+                <h2>{{rating.ratedName}}</h2>
+                <h3>{{rating.rating}}</h5>
+            </div>
+        </div>
+    </div>
+</div>

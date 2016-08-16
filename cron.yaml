@@ -1,0 +1,8 @@
+cron:
+- description: Autogen
+  url: /autogen
+  schedule: every 3 hours
+  
+- description: Scraper
+  url: /scraper
+  schedule: every 2 hours

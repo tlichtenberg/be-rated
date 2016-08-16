@@ -1,0 +1,70 @@
+<div ng-controller="CreateRatingCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>Rate Something</h3>
+            
+            <form name="ratingForm" id="ratingForm" novalidate role="form">
+            
+            	<div class="form-group">
+                    <label for="ratedType">Type <span class="required">*</span></label>
+                    <select id="ratedType" ng-model="rating.ratedType" name="val" ng-options="val for val in ratedTypes"
+                            class="form-control">
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="ratedName">Name <span class="required">*</span></label>
+                    <span class="label label-danger"
+                        ng-show="ratingForm.name.$error.required">Required!</span>
+                    <input id="ratedName" type="text" name="ratedName" ng-model="rating.ratedName" class="form-control"
+                           ng-required="true"/>
+                </div>  
+                
+                <p>
+				<p>
+				<p>           
+            
+                <div>
+	                <span class="rating">
+					    <input type="radio" class="rating-input"
+					        id="rating-input-1-5" name="rating" value="5" ng-model="rating.rating">
+					    <label for="rating-input-1-5" class="rating-star"></label>
+					    <input type="radio" class="rating-input"
+					        id="rating-input-1-4" name="rating" value="4" ng-model="rating.rating">
+					    <label for="rating-input-1-4" class="rating-star"></label>
+					    <input type="radio" class="rating-input"
+					        id="rating-input-1-3" name="rating" value="3" ng-model="rating.rating">
+					    <label for="rating-input-1-3" class="rating-star"></label>
+					    <input type="radio" class="rating-input"
+					        id="rating-input-1-2" name="rating" value="2" ng-model="rating.rating">
+					    <label for="rating-input-1-2" class="rating-star"></label>
+					    <input type="radio" class="rating-input"
+					        id="rating-input-1-1" name="rating" value="1" ng-model="rating.rating">
+					    <label for="rating-input-1-1" class="rating-star"></label>
+					</span>
+				</div>
+				
+				<p>
+				<p>
+				<p>
+				<p>
+				<p>
+				<p>
+
+                <button ng-click="createRating(ratingForm)" class="btn btn-primary"
+                        ng-disabled="!isValidRating(ratingForm) || loading">Create
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

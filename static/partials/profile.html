@@ -1,0 +1,54 @@
+<div ng-controller="MyProfileCtrl" ng-init="init()">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8">
+            <h3>My Profile</h3>
+            <form name="profileForm" novalidate role="form">
+                <div class="form-group" ng-class="{'has-warning': profile.displayName != initialProfile.displayName}">
+                    <label for="displayName">Display Name </label>
+                    <span class="label label-warning"
+                          ng-show="profile.displayName != initialProfile.displayName"> Changed</span>
+                    <input id="displayName" type="text" name="displayName" ng-model="profile.displayName"
+                           class="form-control"/>
+                </div>
+
+                <div class="form-group" ng-class="{'has-warning': profile.gender != initialProfile.gender}">
+                    <label for="gender">Gender</label>
+                    <span class="label label-warning"
+                          ng-show="profile.gender != initialProfile.gender"> Changed</span>
+                    <input id="gender" type="text" name="gender" placeholder="gender (however you want it)" ng-model="profile.gender"
+                           class="form-control"/>
+                </div>
+                               
+                <div class="form-group" ng-class="{'has-warning': profile.zipCode != initialProfile.zipCode}">
+                    <label for="displayName">Zip Code (optional) </label>
+                    <span class="label label-warning"
+                          ng-show="profile.zipCode != initialProfile.zipCode"> Changed</span>
+                    <input id="zipCode" type="text" name="zipCode" placeholder="00000" ng-model="profile.zipCode"
+                           class="form-control"/>
+                </div>
+                
+                <div class="form-group" ng-class="{'has-warning': profile.birthDate != initialProfile.birthDate}">
+                    <label for="displayName">Birth Date (optional) </label>
+                    <span class="label label-warning"
+                          ng-show="profile.birthDate != initialProfile.birthDate"> Changed</span>
+                    <input id="birthDate" type="text" name="birthDate" placeholder="MM/DD/YYYY" ng-model="profile.birthDate"
+                           class="form-control"/>
+                </div>
+               
+                <button ng-click="saveProfile(profileForm)" class="btn btn-primary"
+                        ng-disabled="loading">Update profile
+                </button>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div ng-controller="BrowseRatingsCtrl">
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="messages" class="alert alert-{{alertStatus}}" ng-show="messages">
+                <span ng-bind="messages"></span>
+                <i class="dismiss-messages pull-right glyphicon glyphicon-remove" ng-click="messages = ''"
+                   ng-show="messages"></i>
+            </div>
+            <img class="spinner" src="/img/ajax-loader.gif" ng-show="loading"/>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <h3>Browse Ratings</h3>
+            <h5>(the default view shows some recently added ratings - click on any item to rate it yourself!)</h5>
+        </div>
+    </div>
+
+    <tabset id="show-ratings-tab" justified="false">
+        <tab class="tab-header" text-align="left" select="tabAllSelected()" heading=""></tab>
+    </tabset>
+			
+			<table style="width:100%" id="filter-table">
+			
+			<tr><td align="center">
+                    <label for="canned-rated-type">Category</label>
+                    <select id="canned-rated-type" ng-model="canned.ratedCategory" ng-init="canned.ratedCategory=ratedCategories[0]" ng-change="setRatedType(canned.ratedCategory)" name="val" ng-options="val for val in ratedCategories"
+                            class="form-control">
+                    </select>
+                </td>
+     	
+			<td align="center">
+                <table border="0">
+	                <tr><td>
+					    <input type="radio"
+					        id="rated-sortby-items" name="canned.ratedSortByItem" value="Name" ng-model="canned.ratedSortByItem" ng-change="setRatedSortByItem(canned.ratedSortByItem)">
+					    <label>Sort By Name</label>
+					 </td></tr>	
+					 <tr><td>	
+					    <input type="radio"
+					        id="rated-sortby-items" name="canned.ratedSortByItem" value="High" ng-init="canned.ratedSortByItem='High'" ng-model="canned.ratedSortByItem" ng-change="setRatedSortByItem(canned.ratedSortByItem)">
+					    <label>Sort by Average</label>	
+					  </td></tr>
+					  <tr><td>	
+					    <input type="radio"
+					        id="rated-sortby-items" name="canned.ratedSortByItem" value="Num" ng-model="canned.ratedSortByItem" ng-change="setRatedSortByItem(canned.ratedSortByItem)">
+					    <label>Sort by Num Ratings</label>	
+					  </td></tr>	
+				  </table>		    
+			</td>
+
+             <td align="center">
+            <button ng-click="browseRatings(canned.ratedName);" class="btn btn-primary">
+                <i class="glyphicon glyphicon-search"></i> Search
+            </button>
+            </td>
+            </tr>
+            </table>
+            
+            <table style="width:100%">           
+	            <tr><td align="left">
+				   <label for="ratedName">Name (optional)</label>
+				   <input id="ratedName" size="48" type="text" ng-init="canned.ratedName=' '" name="canned.ratedName" ng-model="canned.ratedName" />
+				</td></tr>
+            </table>
+            
+            <table style="width:100%">           
+	            <tr><td align="left">
+				   <label for="ratedLimit">Limit (0=show all)</label>
+				   <input id="ratedLimit" size="6" type="text" ng-init="canned.ratedLimit='100'" name="canned.ratedLimit" ng-model="canned.ratedLimit" />
+				</td></tr>
+            </table>
+            
+            <div>
+               <p><p><p><p><p><p><p>
+             </div>
+
+            <div ng-show="submitted && browse.length == 0">
+                <h4>No matching results.</h4>
+            </div>
+            <div  ng-show="browse.length > 0">
+                <table class=my-table" border="0" style="width:100%" id="browse-table">
+                    <thead>
+                    <tr>
+                      <!--  <th>Type</th> -->
+                        <th>Name</th>
+                        <th>Average</th>     
+                        <th>Num Ratings</th>                 
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="b in browse | startFrom: pagination.currentPage * pagination.pageSize | limitTo: pagination.pageSize" ng-click="go(b)">
+                   <!--     <td align="center">{{b.ratedType}}</td> -->
+                        <td align="left">{{b.ratedName}}</td>                  
+                        <td align="center">{{b.averageRating}}</td>   
+                        <td align="center">{{b.numRatings}}</td>                
+                    </tr>
+                    </tbody>
+                </table>
+            </div>      
+        <div>
+         <p><p><p><p><p><p><p>
+        </div>
+        
+        <div>
+            <ul class="pagination" ng-show="browse.length > 0">
+                <li ng-class="{disabled: pagination.currentPage == 0 }">
+                    <a ng-class="{disabled: pagination.currentPage == 0 }"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = 0)">&lt&lt</a>
+                </li>
+                <li ng-class="{disabled: pagination.currentPage == 0 }">
+                    <a ng-class="{disabled: pagination.currentPage == 0 }"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage - 1)">&lt</a>
+                </li>
+
+                <!-- ng-repeat creates a new scope. Need to specify the pagination.currentPage as $parent.pagination.currentPage -->
+                <li ng-repeat="page in pagination.pageArray()" ng-class="{active: $parent.pagination.currentPage == page}">
+                    <a ng-click="$parent.pagination.currentPage = page">{{page + 1}}</a>
+                </li>
+
+                <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                    <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.currentPage + 1)">&gt</a>
+                </li>
+                <li ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}">
+                    <a ng-class="{disabled: pagination.currentPage == pagination.numberOfPages() - 1}"
+                       ng-click="pagination.isDisabled($event) || (pagination.currentPage = pagination.numberOfPages() - 1)">&gt&gt</a>
+                </li>
+            </ul>
+        </div>
